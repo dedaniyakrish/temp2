@@ -1,0 +1,50 @@
+﻿@model HospitalManagement.Models.DoctorDepartmentModel
+<main id="main" class="main ms-1">
+
+    <section class="section pt-5 mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary text-center">Add Doctor Department</h5>
+
+                        <form asp-action="DoctorDepartmentAdd_Edit" method="post">
+                            <input type="hidden" asp-for="DoctorDepartmentID" />
+                            <div class="mb-3">
+                                <label asp-for="DoctorID" class="form-label"></label>
+                                <select asp-for="DoctorID" class="form-select">
+                                    <option value="">Select doctor</option>
+                                    @foreach (var doc in (IEnumerable<HospitalManagement.Models.DoctorModel>)ViewBag.Doctors)
+                                    {
+                                        <option value="@doc.DoctorID">@doc.Name</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="DoctorID" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="DepartmentID" class="form-label"></label>
+                                <select asp-for="DepartmentID" class="form-select">
+                                    <option value="">Select department</option>
+                                    @foreach (var dep in (IEnumerable<HospitalManagement.Models.DepartmentModel>)ViewBag.Departments)
+                                    {
+                                        <option value="@dep.DepartmentID">@dep.DepartmentName</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="DepartmentID" class="text-danger"></span>
+                            </div>
+                            <input type="hidden" asp-for="UserID" value="1" />
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <a asp-action="DoctorDepartmentList" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>

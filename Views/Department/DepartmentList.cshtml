@@ -1,0 +1,71 @@
+﻿@model DataTable
+@using System.Data
+
+<style>
+    table td,
+    table th {
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+</style>
+
+<div class="container my-5 ms-1">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title text-primary m-0">Department List</h5>
+                        <a asp-controller="Department" asp-action="DepartmentAdd_Edit" class="btn btn-success btn-sm">
+                            <i class="bi bi-plus-circle me-1"></i> Add New
+                        </a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover text-center align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Department Name</th>
+                                    <th>Description</th>
+                                    <th>IsActive</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (DataRow row in Model.Rows)
+                                {
+                                    <tr>
+                                        <td>@row["DepartmentID"]</td>
+                                        <td>@row["DepartmentName"]</td>
+                                        <td>@row["Description"]</td>
+                                        <td>@(Convert.ToBoolean(row["IsActive"]) ? "Yes" : "No")</td>
+                                        <td>@Convert.ToDateTime(row["Created"]).ToString("dd-MM-yyyy")</td>
+                                        <td>
+                                            <a class="btn btn-warning btn-sm text-light me-1"
+                                               asp-controller="Department"
+                                               asp-action="DepartmentAdd_Edit"
+                                               asp-route-id="@row["DepartmentID"]">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <a class="btn btn-danger btn-sm text-light"
+                                               asp-controller="Department"
+                                               asp-action="DepartmentDelete"
+                                               asp-route-id="@row["DepartmentID"]"
+                                               onclick="return confirm('Are you sure you want to delete this department?');">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    

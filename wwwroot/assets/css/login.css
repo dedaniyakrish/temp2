@@ -1,0 +1,39 @@
+/* Minimal, professional login styles */
+:root{
+  --bg: #f7f9fc;
+  --card-bg: #ffffff;
+  --accent: #0d6efd; /* primary */
+  --muted: #6c757d;
+  --radius: 12px;
+  --shadow: 0 6px 24px rgba(18,38,63,0.08);
+}
+
+.login-wrapper{ background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%); }
+
+.login-card{
+  width: 420px;
+  max-width: calc(100% - 40px);
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(15,23,42,0.04);
+}
+
+.login-card .logo{ display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+.login-card .logo img{ height:40px; }
+.login-card h5{ font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; font-weight:600; color:#072146; margin-bottom:6px; }
+.login-card p.small{ color:var(--muted); margin-bottom:18px; }
+
+.form-control{ border-radius:8px; height:44px; }
+.input-group-text{ background:transparent; border: none; color:var(--muted); }
+
+.btn-primary{ border-radius:8px; height:44px; font-weight:600; }
+
+.form-check-label{ color:var(--muted); }
+
+.footer-muted{ font-size:12px; color:var(--muted); margin-top:16px; }
+
+@media (max-width: 480px){
+  .login-card{ padding:18px; }
+}

@@ -1,0 +1,582 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<style>
+    .dashboard-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem 0;
+        margin: -1.5rem -1.5rem 2rem -1.5rem;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .dashboard-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .dashboard-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        font-weight: 300;
+    }
+    
+    .stats-card {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: white;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    
+    .stats-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--card-gradient);
+        z-index: 1;
+    }
+    
+    .card-patients::before { background: linear-gradient(45deg, #667eea, #764ba2); }
+    .card-doctors::before { background: linear-gradient(45deg, #f093fb, #f5576c); }
+    .card-appointments::before { background: linear-gradient(45deg, #4facfe, #00f2fe); }
+    .card-departments::before { background: linear-gradient(45deg, #43e97b, #38f9d7); }
+    .card-users::before { background: linear-gradient(45deg, #fa709a, #fee140); }
+    .card-relations::before { background: linear-gradient(45deg, #a8edea, #fed6e3); }
+    
+    .stats-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stats-icon::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--icon-gradient);
+        z-index: 1;
+    }
+    
+    .stats-icon i {
+        font-size: 2rem;
+        color: white;
+        z-index: 2;
+        position: relative;
+    }
+    
+    .icon-patients::before { background: linear-gradient(45deg, #667eea, #764ba2); }
+    .icon-doctors::before { background: linear-gradient(45deg, #f093fb, #f5576c); }
+    .icon-appointments::before { background: linear-gradient(45deg, #4facfe, #00f2fe); }
+    .icon-departments::before { background: linear-gradient(45deg, #43e97b, #38f9d7); }
+    .icon-users::before { background: linear-gradient(45deg, #fa709a, #fee140); }
+    .icon-relations::before { background: linear-gradient(45deg, #a8edea, #fed6e3); }
+    
+    .stats-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .stats-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #34495e;
+        margin-bottom: 1rem;
+    }
+    
+    .stats-sublabel {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin-bottom: 1.5rem;
+    }
+    
+    .view-btn {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        border: none;
+        color: white;
+        padding: 0.7rem 1.5rem;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+    
+    .view-btn:hover {
+        background: linear-gradient(45deg, #764ba2, #667eea);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .chart-card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+        background: white;
+    }
+    
+    .chart-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+    }
+    
+    .chart-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin: 0;
+    }
+    
+    .activity-card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        background: white;
+        overflow: hidden;
+    }
+    
+    .activity-header {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        padding: 1.5rem;
+        margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+    }
+    
+    .appointments-header {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        padding: 1.5rem;
+        margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+    }
+    
+    .table-modern {
+        border: none;
+    }
+    
+    .table-modern th {
+        border: none;
+        background: #f8f9fa;
+        color: #2c3e50;
+        font-weight: 600;
+        padding: 1rem;
+    }
+    
+    .table-modern td {
+        border: none;
+        padding: 1rem;
+        border-bottom: 1px solid #ecf0f1;
+    }
+    
+    .activity-item {
+        border: none;
+        background: #f8f9fa;
+        margin-bottom: 0.5rem;
+        border-radius: 10px;
+        padding: 1rem;
+        border-left: 4px solid #667eea;
+    }
+    
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .animate-card:nth-child(1) { animation-delay: 0.1s; }
+    .animate-card:nth-child(2) { animation-delay: 0.2s; }
+    .animate-card:nth-child(3) { animation-delay: 0.3s; }
+    .animate-card:nth-child(4) { animation-delay: 0.4s; }
+    .animate-card:nth-child(5) { animation-delay: 0.5s; }
+    .animate-card:nth-child(6) { animation-delay: 0.6s; }
+    
+    .avatar-sm {
+        width: 35px;
+        height: 35px;
+        font-size: 0.875rem;
+    }
+    
+    .activity-timeline {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    
+    .activity-timeline::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .activity-timeline::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    
+    .activity-timeline::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        border-radius: 10px;
+    }
+    
+    .activity-timeline::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(45deg, #764ba2, #667eea);
+    }
+    
+    .activity-icon {
+        position: relative;
+    }
+    
+    .activity-icon::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 100%;
+        width: 2px;
+        height: 20px;
+        background: linear-gradient(to bottom, #667eea, transparent);
+        transform: translateX(-50%);
+    }
+    
+    .activity-item:last-child .activity-icon::after {
+        display: none;
+    }
+    
+    .fw-medium {
+        font-weight: 500 !important;
+    }
+    
+    .badge {
+        font-size: 0.8rem;
+    }
+    
+    .table-responsive {
+        border-radius: 10px;
+    }
+    
+    .empty-state {
+        padding: 3rem 1rem;
+    }
+    
+    .empty-state i {
+        opacity: 0.5;
+    }
+    
+    .empty-state h5 {
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+    }
+    
+    .empty-state p {
+        color: #adb5bd;
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="dashboard-header text-center">
+    <div class="container">
+        <h1 class="dashboard-title">Hospital Management Dashboard</h1>
+        <p class="dashboard-subtitle">Welcome back! Here's what's happening at your hospital today.</p>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <!-- Patients Card -->
+    <div class="col-xl-2 col-md-4 col-6 animate-card">
+        <div class="card stats-card card-patients text-center h-100">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                <div class="stats-icon icon-patients">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div class="stats-number">@ViewBag.PatientCount</div>
+                <div class="stats-label">Patients</div>
+                <div class="stats-sublabel">Total Registered</div>
+                <a asp-controller="Patient" asp-action="PatientList" class="view-btn">View Details</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Doctors Card -->
+    <div class="col-xl-2 col-md-4 col-6 animate-card">
+        <div class="card stats-card card-doctors text-center h-100">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                <div class="stats-icon icon-doctors">
+                    <i class="bi bi-person-badge"></i>
+                </div>
+                <div class="stats-number">@ViewBag.DoctorCount</div>
+                <div class="stats-label">Doctors</div>
+                <div class="stats-sublabel">Available Specialists</div>
+                <a asp-controller="Doctor" asp-action="DoctorList" class="view-btn">View Details</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Appointments Card -->
+    <div class="col-xl-2 col-md-4 col-6 animate-card">
+        <div class="card stats-card card-appointments text-center h-100">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                <div class="stats-icon icon-appointments">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="stats-number">@ViewBag.AppointmentCount</div>
+                <div class="stats-label">Appointments</div>
+                <div class="stats-sublabel">Scheduled Today</div>
+                <a asp-controller="Appointment" asp-action="AppointmentList" class="view-btn">View Details</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Departments Card -->
+    <div class="col-xl-2 col-md-4 col-6 animate-card">
+        <div class="card stats-card card-departments text-center h-100">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                <div class="stats-icon icon-departments">
+                    <i class="bi bi-building"></i>
+                </div>
+                <div class="stats-number">@ViewBag.DepartmentCount</div>
+                <div class="stats-label">Departments</div>
+                <div class="stats-sublabel">Medical Specialties</div>
+                <a asp-controller="Department" asp-action="DepartmentList" class="view-btn">View Details</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Users Card -->
+    <div class="col-xl-2 col-md-4 col-6 animate-card">
+        <div class="card stats-card card-users text-center h-100">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                <div class="stats-icon icon-users">
+                    <i class="bi bi-person"></i>
+                </div>
+                <div class="stats-number">@ViewBag.UserCount</div>
+                <div class="stats-label">Users</div>
+                <div class="stats-sublabel">System Access</div>
+                <a asp-controller="User" asp-action="UserList" class="view-btn">View Details</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Doctor-Departments Card -->
+    <div class="col-xl-2 col-md-4 col-6 animate-card">
+        <div class="card stats-card card-relations text-center h-100">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                <div class="stats-icon icon-relations">
+                    <i class="bi bi-diagram-3"></i>
+                </div>
+                <div class="stats-number">@ViewBag.DoctorDepartmentCount</div>
+                <div class="stats-label">Relations</div>
+                <div class="stats-sublabel">Doctor-Department</div>
+                <a asp-controller="DoctorDepartment" asp-action="DoctorDepartmentList" class="view-btn">View Details</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Appointments per Department Chart -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card chart-card">
+            <div class="chart-header">
+                <h3 class="chart-title">
+                    <i class="bi bi-bar-chart-fill me-2"></i>
+                    Appointments per Department
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <canvas id="appointmentsChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Today's Appointments & Recent Activity -->
+<div class="row">
+    <!-- Today's Appointments -->
+    <div class="col-lg-6 mb-4">
+        <div class="card activity-card h-100">
+            <div class="appointments-header">
+                <h4 class="chart-title">
+                    <i class="bi bi-calendar-event me-2"></i>
+                    Today's Appointments
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table class="table table-modern">
+                        <thead>
+                            <tr>
+                                <th><i class="bi bi-person me-1"></i>Patient</th>
+                                <th><i class="bi bi-person-badge me-1"></i>Doctor</th>
+                                <th><i class="bi bi-clock me-1"></i>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.TodaysAppointments != null)
+                            {
+                                foreach (var appt in ViewBag.TodaysAppointments)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm bg-primary rounded-circle me-2 d-flex align-items-center justify-content-center">
+                                                    <i class="bi bi-person text-white"></i>
+                                                </div>
+                                                <span class="fw-medium">@appt.PatientName</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm bg-success rounded-circle me-2 d-flex align-items-center justify-content-center">
+                                                    <i class="bi bi-person-badge text-white"></i>
+                                                </div>
+                                                <span class="fw-medium">@appt.DoctorName</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info px-3 py-2 rounded-pill">
+                                                <i class="bi bi-clock me-1"></i>@appt.Time
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center py-5">
+                                        <div class="text-muted">
+                                            <i class="bi bi-calendar-x fs-1 d-block mb-3"></i>
+                                            <h5>No appointments scheduled for today</h5>
+                                            <p class="mb-0">Check back later or schedule new appointments.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="col-lg-6 mb-4">
+        <div class="card activity-card h-100">
+            <div class="activity-header">
+                <h4 class="chart-title">
+                    <i class="bi bi-activity me-2"></i>
+                    Recent Activity
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="activity-timeline">
+                    @if (ViewBag.RecentActivity != null)
+                    {
+                        foreach (var activity in ViewBag.RecentActivity)
+                        {
+                            <div class="activity-item d-flex align-items-center">
+                                <div class="activity-icon me-3">
+                                    <i class="bi bi-dot text-primary fs-2"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="mb-0 fw-medium">@activity</p>
+                                    <small class="text-muted">Just now</small>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <div class="text-muted">
+                                <i class="bi bi-clock-history fs-1 d-block mb-3"></i>
+                                <h5>No recent activity</h5>
+                                <p class="mb-0">Activity will appear here as actions are performed.</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        @using System.Text.Json
+        const chartLabels = @Html.Raw(JsonSerializer.Serialize(ViewBag.ChartLabels ?? new string[0]));
+        const chartData = @Html.Raw(JsonSerializer.Serialize(ViewBag.ChartData ?? new int[0]));
+        const ctx = document.getElementById('appointmentsChart').getContext('2d');
+        const appointmentsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Appointments',
+                    data: chartData,
+                    backgroundColor: [
+                        '#4e73df',
+                        '#1cc88a',
+                        '#36b9cc',
+                        '#f6c23e',
+                        '#e74a3b',
+                        '#6f42c1',
+                        '#20c997',
+                        '#fd7e14',
+                        '#0dcaf0',
+                        '#adb5bd'
+                    ],
+                    borderRadius: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}

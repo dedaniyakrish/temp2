@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>@ViewData["Title"] - Hospital Management System</title>
+
+    <!-- Favicons -->
+    <link href="~/assets/img/Favicon.png" rel="icon">
+    <link href="~/assets/img/Favicon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~/assets/css/style.css" rel="stylesheet">
+    <!-- Login specific minimal styles -->
+    <link href="~/assets/css/login.css" rel="stylesheet">
+    
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <div class="login-wrapper d-flex align-items-center justify-content-center min-vh-100">
+        <div class="login-card">
+            @RenderBody()
+        </div>
+    </div>
+    
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+    
+    <!-- Template Main JS File -->
+    <script src="~/assets/js/main.js"></script>
+    
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    
+    <script>
+        // Minimal, professional toastr config and display
+        $(document).ready(function() {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "200",
+                "hideDuration": "300",
+                "timeOut": "2500",
+                "extendedTimeOut": "800",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            var successMessage = '@TempData["SuccessMessage"]';
+            if (successMessage) {
+                toastr.success(successMessage);
+            }
+
+            var errorMessage = '@TempData["ErrorMessage"]';
+            if (errorMessage) {
+                toastr.error(errorMessage);
+            }
+
+            var infoMessage = '@TempData["InfoMessage"]';
+            if (infoMessage) {
+                toastr.info(infoMessage);
+            }
+        });
+    </script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

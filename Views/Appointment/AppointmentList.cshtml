@@ -1,0 +1,85 @@
+﻿@model DataTable
+@using System.Data
+
+<style>
+    table td,
+    table th {
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+</style>
+
+<main id="main" class="main ms-1">
+    <section class="section pt-5 mt-4">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Appointment List</h5>
+
+                        <div class="mb-3 text-end">
+                            <a asp-controller="Appointment" asp-action="AppointmentAdd_Edit" class="btn btn-success btn-sm">
+                                Add New
+                            </a>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover text-center align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Doctor</th>
+                                        <th>Patient</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Description</th>
+                                        <th>Remarks</th>
+                                        <th>Amount</th>
+                                        <th>User</th>
+                                        <th>Created</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (DataRow row in Model.Rows)
+                                    {
+                                        <tr>
+                                            <td>@row["AppointmentID"]</td>
+                                            <td>@row["DoctorID"]</td>
+                                            <td>@row["PatientID"]</td>
+                                            <td>@Convert.ToDateTime(row["AppointmentDate"]).ToString("dd-MM-yyyy")</td>
+                                            <td>@row["AppointmentStatus"]</td>
+                                            <td>@row["Description"]</td>
+                                            <td>@row["SpecialRemarks"]</td>
+                                            <td>@row["TotalConsultedAmount"]</td>
+                                            <td>@row["UserID"]</td>
+                                            <td>@Convert.ToDateTime(row["Created"]).ToString("dd-MM-yyyy")</td>
+                                            <td>
+                                                <a class="btn btn-warning btn-sm text-light"
+                                                   asp-controller="Appointment"
+                                                   asp-action="AppointmentAdd_Edit"
+                                                   asp-route-id="@row["AppointmentID"]">
+                                                    Edit
+                                                </a>
+                                                <a class="btn btn-danger btn-sm text-light"
+                                                   asp-controller="Appointment"
+                                                   asp-action="AppointmentDelete"
+                                                   asp-route-id="@row["AppointmentID"]"
+                                                   onclick="return confirm('Are you sure you want to delete this appointment?');">
+                                                    Delete
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>

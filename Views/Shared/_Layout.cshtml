@@ -1,0 +1,229 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Dashboard - Hospital Management</title>
+
+    <link href="~/assets/img/Favicon.png" rel="icon">
+    <link href="~/assets/img/Favicon.png" rel="logo">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Nunito|Poppins" rel="stylesheet">
+
+    <!-- Vendor CSS -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+    <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet" />
+    <link href="~/assets/vendor/simple-datatables/style.css" rel="stylesheet" />
+    <link href="~/assets/css/style.css" rel="stylesheet" />
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    <!-- ======= Header ======= --> 
+    <header id="header" class="header fixed-top d-flex align-items-center py-3" style="height: 75px;">
+        <div class="d-flex align-items-center justify-content-between w-100 px-4">
+            <a href="#" class="logo d-flex align-items-center">
+                <img src="~/assets/img/Logo.png" class="me-2" style="height: 60px; width: auto;" alt="Logo" />
+                <h3 class="mb-0" style="font-weight: 600; color: #012970;padding:15px">HealOS </h3>
+                <i class="bi bi-list toggle-sidebar-btn" style="padding: 20px"></i>
+            </a>
+
+
+           
+            <nav class="header-nav ms-auto">
+                <ul class="d-flex align-items-center">
+                    <li class="nav-item dropdown pe-3">
+                        <a class="nav-link nav-profile d-flex align-items-center pe-0" data-bs-toggle="dropdown" href="#">
+                            <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle" style="width: 40px; height: 40px;">
+                            <span class="d-none d-md-block dropdown-toggle ps-2">Krish Dedaniya J</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                            <li class="dropdown-header">
+                                <h6>Krish Dedaniya J</h6>
+                                <span>Web Developer</span>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            @if (Context.Session.GetString("UserID") != null)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Sign Out</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- End Header -->
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+            <li class="nav-item">
+                <a class="nav-link " asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Full Sidebar Dropdowns You Provided -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#Patient-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>Patient</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="Patient-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li><a asp-controller="Patient" asp-action="PatientAddEdit"><i class="bi bi-circle"></i><span>Patient Add/Edit</span></a></li>
+                    <li><a asp-controller="Patient" asp-action="PatientList"><i class="bi bi-circle"></i><span>Patient List</span></a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#Doctor-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>Doctor</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="Doctor-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li><a asp-controller="Doctor" asp-action="DoctorAdd_Edit"><i class="bi bi-circle"></i><span>Doctor Add/Edit</span></a></li>
+                    <li><a asp-controller="Doctor" asp-action="DoctorList"><i class="bi bi-circle"></i><span>Doctor List</span></a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#DoctorDepartment-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>Doctor Department</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="DoctorDepartment-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li><a asp-controller="DoctorDepartment" asp-action="DoctorDepartmentAdd_Edit"><i class="bi bi-circle"></i><span>Doctor Department Add/Edit</span></a></li>
+                    <li><a asp-controller="DoctorDepartment" asp-action="DoctorDepartmentList"><i class="bi bi-circle"></i><span>Doctor Department List</span></a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#Department-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>Department</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="Department-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li><a asp-controller="Department" asp-action="DepartmentAdd_Edit"><i class="bi bi-circle"></i><span>Department Add/Edit</span></a></li>
+                    <li><a asp-controller="Department" asp-action="DepartmentList"><i class="bi bi-circle"></i><span>Department List</span></a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#Appointment-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>Appointment</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="Appointment-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li><a asp-controller="Appointment" asp-action="AppointmentAdd_Edit"><i class="bi bi-circle"></i><span>Appointment Add/Edit</span></a></li>
+                    <li><a asp-controller="Appointment" asp-action="AppointmentList"><i class="bi bi-circle"></i><span>Appointment List</span></a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#User-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>User</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="User-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li><a asp-controller="User" asp-action="UserAddEdit"><i class="bi bi-circle"></i><span>User Add/Edit</span></a></li>
+                    <li><a asp-controller="User" asp-action="UserList"><i class="bi bi-circle"></i><span>User List</span></a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside><!-- End Sidebar-->
+    <!-- ======= Main Content ======= -->
+    <main id="main" class="main pt-4">
+        @RenderBody()
+    </main>
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer bg-dark text-white mt-5">
+        <div class="container py-3 d-flex justify-content-between align-items-center flex-wrap">
+            <div class="text-center text-md-start">
+                <strong>&copy; 2025 Hospital Management System</strong> - All rights reserved.
+            </div>
+            <div>
+                <span class="me-2">Built with 💙 by <a class="text-info text-decoration-none" href="https://bootstrapmade.com/" target="_blank">BootstrapMade</a></span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="~/assets/js/main.js"></script>
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+    <!-- Toast Notifications -->
+    <script>
+        $(document).ready(function() {
+            // Configure toastr options
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            // Display success messages
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <text>
+                toastr.success('@Html.Raw(TempData["SuccessMessage"])');
+                </text>
+            }
+
+            // Display error messages
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <text>
+                toastr.error('@Html.Raw(TempData["ErrorMessage"])');
+                </text>
+            }
+
+            // Display info messages
+            @if (TempData["InfoMessage"] != null)
+            {
+                <text>
+                toastr.info('@Html.Raw(TempData["InfoMessage"])');
+                </text>
+            }
+
+            // Display warning messages
+            @if (TempData["WarningMessage"] != null)
+            {
+                <text>
+                toastr.warning('@Html.Raw(TempData["WarningMessage"])');
+                </text>
+            }
+        });
+    </script>
+
+
+</body>
+</html>
