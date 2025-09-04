@@ -1,33 +1,69 @@
-﻿@model HospitalManagement.Models.DepartmentModel
+@model HospitalManagement.Models.DepartmentModel
 @{
     ViewBag.Title = "Add Department";
 }
-<div class="container my-5 ms-1">
+
+<div class="page-header text-center">
+    <div class="container">
+        <h1 class="page-title">
+            <i class="bi bi-building me-3"></i>
+            @(Model.DepartmentID > 0 ? "Edit Department" : "Add New Department")
+        </h1>
+        <p class="page-subtitle">@(Model.DepartmentID > 0 ? "Update department information" : "Create a new medical department")</p>
+    </div>
+</div>
+
+<div class="container animate-fade-in-up">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
+        <div class="col-lg-6">
+            <div class="form-container">
                 <div class="card-body">
-                    <h5 class="card-title text-center text-primary mb-4">Add Department</h5>
                     <form asp-action="DepartmentAdd_Edit" method="post">
                         <input type="hidden" asp-for="DepartmentID" />
-                        <div class="mb-3">
+                        
+                        <div class="form-section">
+                            <h3 class="form-section-title">
+                                <i class="bi bi-info-circle"></i>
+                                Department Information
+                            </h3>
+                            
+                            <div class="mb-4">
                             <label asp-for="DepartmentName" class="form-label"></label>
-                            <input asp-for="DepartmentName" class="form-control" />
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                    <input asp-for="DepartmentName" class="form-control" placeholder="e.g. Cardiology, Neurology" />
+                                </div>
                             <span asp-validation-for="DepartmentName" class="text-danger"></span>
                         </div>
-                        <div class="mb-3">
+                            
+                            <div class="mb-4">
                             <label asp-for="Description" class="form-label"></label>
-                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-file-text"></i></span>
+                                    <textarea asp-for="Description" class="form-control" rows="4" placeholder="Describe the department's services and specialties..."></textarea>
+                                </div>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="IsActive" class="form-label"></label>
-                            <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                            
+                            <div class="mb-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input asp-for="IsActive" class="form-check-input me-3" type="checkbox" style="transform: scale(1.2);" />
+                                    <label asp-for="IsActive" class="form-check-label fw-semibold">Active Department</label>
+                                </div>
+                            </div>
                         </div>
+                        
                         <input type="hidden" asp-for="UserID" value="1" />
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-success me-2">Save</button>
-                            <a asp-action="DepartmentList" class="btn btn-secondary">Cancel</a>
+                        
+                        <div class="action-buttons">
+                            <button type="submit" class="btn btn-success px-6">
+                                <i class="bi bi-check-circle me-2"></i>
+                                @(Model.DepartmentID > 0 ? "Update Department" : "Save Department")
+                            </button>
+                            <a asp-action="DepartmentList" class="btn btn-secondary px-6">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Back to List
+                            </a>
                         </div>
                     </form>
                 </div>

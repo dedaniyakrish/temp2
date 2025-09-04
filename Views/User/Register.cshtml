@@ -13,16 +13,18 @@
                     <div class="col-lg-6 col-md-8 d-flex flex-column align-items-center justify-content-center">
                         <div class="d-flex justify-content-center py-4">
                             <a href="~\/" class="logo d-flex align-items-center w-auto text-decoration-none">
-                                <img src="~/img/logo.png" alt="" style="height:48px;margin-right:10px;" />
-                                <span class="h4 mb-0 text-primary">Hospital Management</span>
+                                <div class="icon-wrapper me-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-600), var(--primary-500));">
+                                    <i class="bi bi-hospital text-white" style="font-size: 1.5rem;"></i>
+                                </div>
+                                <span class="h3 mb-0 text-gradient fw-bold">HealOS</span>
                             </a>
                         </div>
 
-                        <div class="card shadow-sm mb-3 w-100">
+                        <div class="card shadow-lg mb-3 w-100" style="border-radius: 1.5rem; border: none;">
                             <div class="card-body p-4">
                                 <div class="pt-2 pb-2 text-center">
-                                    <h5 class="card-title pb-0 fs-4">Create an Account</h5>
-                                    <p class="text-muted small">Enter your details to register</p>
+                                    <h5 class="card-title pb-0 fs-4 fw-bold text-gradient">Create Account</h5>
+                                    <p class="text-muted">Join our hospital management system</p>
                                 </div>
 
                                 <form asp-action="Register" asp-controller="User" method="post" class="row g-3 needs-validation" novalidate>
@@ -32,7 +34,7 @@
                                     <div class="mb-3">
                                         <label asp-for="Username" class="form-label">Username</label>
                                         <div class="input-group has-validation">
-                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            <span class="input-group-text" style="background: var(--primary-50); border-color: var(--primary-200);"><i class="bi bi-person text-primary"></i></span>
                                             <input type="text" asp-for="Username" class="form-control" required />
                                         </div>
                                         <span asp-validation-for="Username" class="text-danger"></span>
@@ -41,7 +43,7 @@
                                     <div class="mb-3">
                                         <label asp-for="Email" class="form-label">Email</label>
                                         <div class="input-group has-validation">
-                                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                            <span class="input-group-text" style="background: var(--primary-50); border-color: var(--primary-200);"><i class="bi bi-envelope text-primary"></i></span>
                                             <input type="email" asp-for="Email" class="form-control" required />
                                         </div>
                                         <span asp-validation-for="Email" class="text-danger"></span>
@@ -50,7 +52,7 @@
                                     <div class="mb-3">
                                         <label asp-for="MobileNo" class="form-label">Mobile Number (Optional)</label>
                                         <div class="input-group">
-                                            <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                                            <span class="input-group-text" style="background: var(--primary-50); border-color: var(--primary-200);"><i class="bi bi-phone text-primary"></i></span>
                                             <input type="text" asp-for="MobileNo" class="form-control" />
                                         </div>
                                         <span asp-validation-for="MobileNo" class="text-danger"></span>
@@ -59,7 +61,7 @@
                                     <div class="mb-3">
                                         <label asp-for="Password" class="form-label">Password</label>
                                         <div class="input-group has-validation">
-                                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                            <span class="input-group-text" style="background: var(--primary-50); border-color: var(--primary-200);"><i class="bi bi-lock text-primary"></i></span>
                                             <input type="password" asp-for="Password" class="form-control" required />
                                         </div>
                                         <span asp-validation-for="Password" class="text-danger"></span>
@@ -68,30 +70,36 @@
                                     <div class="mb-3">
                                         <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
                                         <div class="input-group has-validation">
-                                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                            <span class="input-group-text" style="background: var(--primary-50); border-color: var(--primary-200);"><i class="bi bi-lock text-primary"></i></span>
                                             <input type="password" asp-for="ConfirmPassword" class="form-control" required />
                                         </div>
                                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                     </div>
 
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required />
+                                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required style="transform: scale(1.1);" />
                                         <label class="form-check-label" for="acceptTerms">I agree to the <a href="#">terms and conditions</a></label>
                                         <div class="invalid-feedback">You must agree before submitting.</div>
                                     </div>
 
                                     <div class="d-grid">
-                                        <button class="btn btn-primary" type="submit">Create Account</button>
+                                        <button class="btn btn-primary py-3" type="submit" style="border-radius: 0.75rem; font-weight: 600;">
+                                            <i class="bi bi-person-plus me-2"></i>
+                                            Create Account
+                                        </button>
                                     </div>
 
                                     <div class="text-center mt-3">
-                                        <p class="small mb-0">Already have an account? <a asp-action="Login" asp-controller="User">Log in</a></p>
+                                        <p class="small mb-0">Already have an account? <a asp-action="Login" asp-controller="User" class="text-primary fw-semibold">Sign in here</a></p>
                                     </div>
                                 </form>
                             </div>
                         </div>
 
-                        <div class="mt-3 text-center text-muted small">&copy; @DateTime.Now.Year Hospital Management</div>
+                        <div class="mt-4 text-center text-muted small">
+                            <i class="bi bi-shield-check me-1"></i>
+                            &copy; @DateTime.Now.Year HealOS - Secure Hospital Management
+                        </div>
                     </div>
                 </div>
             </div>

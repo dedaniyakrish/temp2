@@ -1,63 +1,127 @@
-﻿@model DataTable
+@model DataTable
 @using System.Data
 
-<style>
-    table td,
-    table th {
-        white-space: nowrap; 
-        vertical-align: middle;
-    }
-</style>
+<div class="page-header text-center">
+    <div class="container">
+        <h1 class="page-title">
+            <i class="bi bi-people me-3"></i>
+            User Management
+        </h1>
+        <p class="page-subtitle">Manage system users and their access permissions</p>
+    </div>
+</div>
 
-<main id="main" class="main ms-1">
+<div class="search-filter-bar animate-fade-in-up">
+    <div class="search-input">
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control" placeholder="Search users..." id="searchInput">
+        </div>
+    </div>
+    <a asp-controller="User" asp-action="UserAddEdit" class="btn btn-success">
+        <i class="bi bi-plus-circle me-2"></i>
+        Add New User
+    </a>
+</div>
 
-    <section class="section pt-5 mt-4">
-        <div class="row">
+<div class="row animate-slide-in-right">
             <div class="col-12">
-
-                <div class="card shadow">
+                <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title text-primary">User List</h5>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h5 class="card-title mb-1">System Users</h5>
+                                <p class="text-muted mb-0">Total: @Model.Rows.Count users</p>
+                            </div>
+                        </div>
 
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover text-center align-middle">
-                                <thead class="table-light">
+                            <table class="table table-modern" id="usersTable">
+                                <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>User Name</th>
+                                        <th>ID</th>
+                                        <th>User Information</th>
                                         <th>Email</th>
-                                        <th>MobileNo</th>
-                                        <th>IsActive</th>
-                                        <th>Created</th>
-                                        <th>Action</th>
+                                        <th>Mobile</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if (Model.Rows.Count == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="6" class="text-center py-5">
+                                                <div class="empty-state">
+                                                    <i class="bi bi-person-x"></i>
+                                                    <h3>No Users Found</h3>
+                                                    <p>Start by creating your first system user.</p>
+                                                    <a asp-controller="User" asp-action="UserAddEdit" class="btn btn-success">
+                                                        <i class="bi bi-plus-circle me-2"></i>Add First User
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
                                     @foreach (DataRow row in Model.Rows)
                                     {
                                         <tr>
                                             <td>@row["UserID"]</td>
-                                            <td>@row["UserName"]</td>
-                                            <td>@row["Email"]</td>
-                                            <td>@row["MobileNo"]</td>
-                                            <td>@(Convert.ToBoolean(row["IsActive"]) ? "Yes" : "No")</td>
-                                            <td>@Convert.ToDateTime(row["Created"]).ToString("dd-MM-yyyy")</td>
                                             <td>
-                                                <a class="btn btn-warning btn-sm text-light"
+                                                <div class="d-flex align-items-center">
+                                                    <div class="icon-wrapper me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--secondary-600), var(--secondary-500));">
+                                                        <i class="bi bi-person text-white"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-semibold">@row["UserName"]</div>
+                                                        <small class="text-muted">Created: @Convert.ToDateTime(row["Created"]).ToString("MMM dd, yyyy")</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>@row["Email"]</td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(row["MobileNo"]?.ToString()))
+                                                {
+                                                    <span class="fw-medium">@row["MobileNo"]</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">Not provided</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (Convert.ToBoolean(row["IsActive"]))
+                                                {
+                                                    <span class="status-badge status-active">
+                                                        <i class="bi bi-check-circle me-1"></i>Active
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="status-badge status-inactive">
+                                                        <i class="bi bi-x-circle me-1"></i>Inactive
+                                                    </span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <a class="btn btn-warning btn-icon"
                                                    asp-controller="User"
                                                    asp-action="UserAddEdit"
-                                                   asp-route-id="@row["UserID"]">
-                                                    Edit
+                                                       asp-route-id="@row["UserID"]"
+                                                       title="Edit User">
+                                                        <i class="bi bi-pencil"></i>
                                                 </a>
-                                                <a class="btn btn-danger btn-sm text-light"
+                                                    <a class="btn btn-danger btn-icon"
                                                    asp-controller="User"
                                                    asp-action="UserDelete"
                                                    asp-route-id="@row["UserID"]"
-                                                   onclick="return confirm('Are you sure you want to delete this user?');">
-                                                    Delete
+                                                       onclick="return confirm('Are you sure you want to delete this user?');"
+                                                       title="Delete User">
+                                                        <i class="bi bi-trash"></i>
                                                 </a>
+                                                </div>
                                             </td>
-
                                         </tr>
                                     }
                                 </tbody>
@@ -66,9 +130,20 @@
 
                     </div>
                 </div>
-
             </div>
-        </div>
-    </section>
+</div>
 
-</main>
+@section Scripts {
+    <script>
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const tableRows = document.querySelectorAll('#usersTable tbody tr');
+            
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+    </script>
+}

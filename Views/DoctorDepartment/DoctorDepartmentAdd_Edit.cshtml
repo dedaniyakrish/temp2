@@ -1,50 +1,73 @@
-﻿@model HospitalManagement.Models.DoctorDepartmentModel
-<main id="main" class="main ms-1">
+@model HospitalManagement.Models.DoctorDepartmentModel
 
-    <section class="section pt-5 mt-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-6">
+<div class="page-header text-center">
+    <div class="container">
+        <h1 class="page-title">
+            <i class="bi bi-diagram-3 me-3"></i>
+            @(Model.DoctorDepartmentID > 0 ? "Edit Assignment" : "Assign Doctor to Department")
+        </h1>
+        <p class="page-subtitle">@(Model.DoctorDepartmentID > 0 ? "Update doctor-department assignment" : "Create new doctor-department relationship")</p>
+    </div>
+</div>
 
-                <div class="card shadow">
+<div class="row justify-content-center animate-fade-in-up">
+    <div class="col-lg-6">
+        <div class="form-container">
                     <div class="card-body">
-                        <h5 class="card-title text-primary text-center">Add Doctor Department</h5>
-
                         <form asp-action="DoctorDepartmentAdd_Edit" method="post">
                             <input type="hidden" asp-for="DoctorDepartmentID" />
-                            <div class="mb-3">
+                            
+                            <div class="form-section">
+                                <h3 class="form-section-title">
+                                    <i class="bi bi-link-45deg"></i>
+                                    Assignment Details
+                                </h3>
+                                
+                                <div class="mb-4">
                                 <label asp-for="DoctorID" class="form-label"></label>
-                                <select asp-for="DoctorID" class="form-select">
-                                    <option value="">Select doctor</option>
-                                    @foreach (var doc in (IEnumerable<HospitalManagement.Models.DoctorModel>)ViewBag.Doctors)
-                                    {
-                                        <option value="@doc.DoctorID">@doc.Name</option>
-                                    }
-                                </select>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                        <select asp-for="DoctorID" class="form-select">
+                                            <option value="">Select doctor</option>
+                                            @foreach (var doc in (IEnumerable<HospitalManagement.Models.DoctorModel>)ViewBag.Doctors)
+                                            {
+                                                <option value="@doc.DoctorID">Dr. @doc.Name</option>
+                                            }
+                                        </select>
+                                    </div>
                                 <span asp-validation-for="DoctorID" class="text-danger"></span>
                             </div>
-                            <div class="mb-3">
+                                
+                                <div class="mb-4">
                                 <label asp-for="DepartmentID" class="form-label"></label>
-                                <select asp-for="DepartmentID" class="form-select">
-                                    <option value="">Select department</option>
-                                    @foreach (var dep in (IEnumerable<HospitalManagement.Models.DepartmentModel>)ViewBag.Departments)
-                                    {
-                                        <option value="@dep.DepartmentID">@dep.DepartmentName</option>
-                                    }
-                                </select>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                        <select asp-for="DepartmentID" class="form-select">
+                                            <option value="">Select department</option>
+                                            @foreach (var dep in (IEnumerable<HospitalManagement.Models.DepartmentModel>)ViewBag.Departments)
+                                            {
+                                                <option value="@dep.DepartmentID">@dep.DepartmentName</option>
+                                            }
+                                        </select>
+                                    </div>
                                 <span asp-validation-for="DepartmentID" class="text-danger"></span>
                             </div>
+                            </div>
+                            
                             <input type="hidden" asp-for="UserID" value="1" />
-                            <div class="d-flex justify-content-between">
-                                <button type="submit" class="btn btn-success">Save</button>
-                                <a asp-action="DoctorDepartmentList" class="btn btn-secondary">Cancel</a>
+                            
+                            <div class="action-buttons">
+                                <button type="submit" class="btn btn-success px-6">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    @(Model.DoctorDepartmentID > 0 ? "Update Assignment" : "Create Assignment")
+                                </button>
+                                <a asp-action="DoctorDepartmentList" class="btn btn-secondary px-6">
+                                    <i class="bi bi-arrow-left me-2"></i>
+                                    Back to List
+                                </a>
                             </div>
                         </form>
-
                     </div>
                 </div>
-
             </div>
-        </div>
-    </section>
-
-</main>
+</div>

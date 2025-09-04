@@ -1,64 +1,104 @@
-﻿@model HospitalManagement.Models.DoctorModel
+@model HospitalManagement.Models.DoctorModel
 
-<main id="main" class="main ms-1">
+<div class="page-header text-center">
+    <div class="container">
+        <h1 class="page-title">
+            <i class="bi bi-person-badge me-3"></i>
+            @(Model.DoctorID > 0 ? "Edit Doctor" : "Add New Doctor")
+        </h1>
+        <p class="page-subtitle">@(Model.DoctorID > 0 ? "Update doctor information" : "Register a new medical professional")</p>
+    </div>
+</div>
 
-    <section class="section pt-5 mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-5">
-
-                <div class="card shadow">
+<div class="row justify-content-center animate-fade-in-up">
+    <div class="col-lg-8 col-xl-6">
+        <div class="form-container">
                     <div class="card-body">
-                        <h5 class="card-title text-primary text-center">Add Doctor</h5>
-
                         <form asp-action="DoctorAdd_Edit" method="post">
                             <input type="hidden" asp-for="DoctorID" />
-                            <div class="mb-3">
+                            
+                            <div class="form-section">
+                                <h3 class="form-section-title">
+                                    <i class="bi bi-person-circle"></i>
+                                    Personal Information
+                                </h3>
+                                
+                                <div class="mb-4">
                                 <label asp-for="Name" class="form-label"></label>
-                                <input asp-for="Name" class="form-control" placeholder="Enter full name">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        <input asp-for="Name" class="form-control" placeholder="Dr. John Smith">
+                                    </div>
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
 
-                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
                                 <label asp-for="Email" class="form-label"></label>
-                                <input asp-for="Email" class="form-control" placeholder="Enter email address">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                            <input asp-for="Email" class="form-control" placeholder="doctor@hospital.com">
+                                        </div>
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
 
-                            <div class="mb-3">
+                                    <div class="col-md-6 mb-4">
                                 <label asp-for="Phone" class="form-label"></label>
-                                <input asp-for="Phone" class="form-control" placeholder="Enter contact number">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                                            <input asp-for="Phone" class="form-control" placeholder="+1 (555) 123-4567">
+                                        </div>
                                 <span asp-validation-for="Phone" class="text-danger"></span>
                             </div>
+                                </div>
+                            </div>
 
-                            <div class="mb-3">
+                            <div class="form-section">
+                                <h3 class="form-section-title">
+                                    <i class="bi bi-mortarboard"></i>
+                                    Professional Information
+                                </h3>
+                                
+                                <div class="mb-4">
                                 <label asp-for="Specialization" class="form-label"></label>
-                                <input asp-for="Specialization" class="form-control" placeholder="e.g. Cardiologist">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-heart-pulse"></i></span>
+                                        <input asp-for="Specialization" class="form-control" placeholder="e.g. Cardiologist, Neurologist">
+                                    </div>
                                 <span asp-validation-for="Specialization" class="text-danger"></span>
                             </div>
 
-                            <div class="mb-3">
+                                <div class="mb-4">
                                 <label asp-for="Qualification" class="form-label"></label>
-                                <input asp-for="Qualification" class="form-control" placeholder="Enter qualification">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-award"></i></span>
+                                        <input asp-for="Qualification" class="form-control" placeholder="MBBS, MD, PhD">
+                                    </div>
                                 <span asp-validation-for="Qualification" class="text-danger"></span>
                             </div>
 
-                            <div class="mb-3">
-                                <label asp-for="IsActive" class="form-label"></label>
-                                <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                                <div class="mb-4">
+                                    <div class="form-check d-flex align-items-center">
+                                        <input asp-for="IsActive" class="form-check-input me-3" type="checkbox" style="transform: scale(1.2);" />
+                                        <label asp-for="IsActive" class="form-check-label fw-semibold">Active Doctor</label>
+                                    </div>
+                                </div>
                             </div>
 
                             <input type="hidden" asp-for="UserID" value="1" />
-                            <div class="d-flex justify-content-between">
-                                <button type="submit" class="btn btn-success">Save</button>
-                                <a asp-action="DoctorList" class="btn btn-secondary">Cancel</a>
+                            
+                            <div class="action-buttons">
+                                <button type="submit" class="btn btn-success px-6">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    @(Model.DoctorID > 0 ? "Update Doctor" : "Save Doctor")
+                                </button>
+                                <a asp-action="DoctorList" class="btn btn-secondary px-6">
+                                    <i class="bi bi-arrow-left me-2"></i>
+                                    Back to List
+                                </a>
                             </div>
                         </form>
-
                     </div>
                 </div>
-
             </div>
-        </div>
-    </section>
-
-</main>
+</div>

@@ -1,35 +1,45 @@
-﻿@model DataTable
+@model DataTable
 @using System.Data
 
-<style>
-    table td,
-    table th {
-        white-space: nowrap;
-        vertical-align: middle;
-    }
-</style>
+<div class="page-header text-center">
+    <div class="container">
+        <h1 class="page-title">
+            <i class="bi bi-diagram-3 me-3"></i>
+            Doctor-Department Assignments
+        </h1>
+        <p class="page-subtitle">Manage relationships between doctors and departments</p>
+    </div>
+</div>
 
-<main id="main" class="main ms-1">
+<div class="search-filter-bar animate-fade-in-up">
+    <div class="search-input">
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control" placeholder="Search assignments..." id="searchInput">
+        </div>
+    </div>
+    <a asp-controller="DoctorDepartment" asp-action="DoctorDepartmentAdd_Edit" class="btn btn-success">
+        <i class="bi bi-plus-circle me-2"></i>
+        Create New Assignment
+    </a>
+</div>
 
-    <section class="section pt-5 mt-4">
-        <div class="row">
+<div class="row animate-slide-in-right">
             <div class="col-12">
-
-                <div class="card shadow">
+                <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title text-primary">Doctor-Department List</h5>
-
-                        <div class="mb-3 text-end">
-                            <a asp-controller="DoctorDepartment" asp-action="DoctorDepartmentAdd_Edit" class="btn btn-success btn-sm">
-                                Add New
-                            </a>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h5 class="card-title mb-1">Active Assignments</h5>
+                                <p class="text-muted mb-0">Total: @Model.Rows.Count assignments</p>
+                            </div>
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover text-center align-middle">
-                                <thead class="table-light">
+                            <table class="table table-modern" id="assignmentsTable">
+                                <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th>ID</th>
                                         <th>Doctor Name</th>
                                         <th>Department Name</th>
                                         <th>Created</th>
@@ -37,28 +47,71 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if (Model.Rows.Count == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-center py-5">
+                                                <div class="empty-state">
+                                                    <i class="bi bi-diagram-3"></i>
+                                                    <h3>No Assignments Found</h3>
+                                                    <p>Start by creating doctor-department assignments.</p>
+                                                    <a asp-controller="DoctorDepartment" asp-action="DoctorDepartmentAdd_Edit" class="btn btn-success">
+                                                        <i class="bi bi-plus-circle me-2"></i>Create First Assignment
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
                                     @foreach (DataRow row in Model.Rows)
                                     {
                                         <tr>
                                             <td>@row["DoctorDepartmentID"]</td>
-                                            <td>@row["DoctorName"]</td>
-                                            <td>@row["DepartmentName"]</td>
-                                            <td>@Convert.ToDateTime(row["Created"]).ToString("dd-MM-yyyy")</td>
                                             <td>
-                                                <a class="btn btn-warning btn-sm text-light"
+                                                <div class="d-flex align-items-center">
+                                                    <div class="icon-wrapper me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--success-500), var(--success-400));">
+                                                        <i class="bi bi-person-badge text-white"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-semibold">Dr. @row["DoctorName"]</div>
+                                                        <small class="text-muted">Medical Professional</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="icon-wrapper me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary-500), var(--primary-400));">
+                                                        <i class="bi bi-building text-white"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-semibold">@row["DepartmentName"]</div>
+                                                        <small class="text-muted">Department</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="fw-medium">@Convert.ToDateTime(row["Created"]).ToString("MMM dd, yyyy")</span>
+                                                <br>
+                                                <small class="text-muted">@Convert.ToDateTime(row["Created"]).ToString("hh:mm tt")</small>
+                                            </td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <a class="btn btn-warning btn-icon"
                                                    asp-controller="DoctorDepartment"
                                                    asp-action="DoctorDepartmentAdd_Edit"
-                                                   asp-route-id="@row["DoctorDepartmentID"]">
-                                                    Edit
+                                                       asp-route-id="@row["DoctorDepartmentID"]"
+                                                       title="Edit Assignment">
+                                                        <i class="bi bi-pencil"></i>
                                                 </a>
 
-                                                <a class="btn btn-danger btn-sm text-light"
+                                                    <a class="btn btn-danger btn-icon"
                                                    asp-controller="DoctorDepartment"
                                                    asp-action="DoctorDepartmentDelete"
                                                    asp-route-id="@row["DoctorDepartmentID"]"
-                                                   onclick="return confirm('Are you sure you want to delete this record?');">
-                                                    Delete
+                                                       onclick="return confirm('Are you sure you want to delete this assignment?');"
+                                                       title="Delete Assignment">
+                                                        <i class="bi bi-trash"></i>
                                                 </a>
+                                                </div>
                                             </td>
                                         </tr>
                                     }
@@ -68,9 +121,20 @@
 
                     </div>
                 </div>
-
             </div>
-        </div>
-    </section>
+</div>
 
-</main>
+@section Scripts {
+    <script>
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const tableRows = document.querySelectorAll('#assignmentsTable tbody tr');
+            
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+    </script>
+}
